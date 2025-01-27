@@ -4,19 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.allinedelara.domain.useCase.GetDog
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-@HiltViewModel
-class DogViewModel @Inject constructor(private val getDog: GetDog) : ViewModel()  {
+sealed class UiState {
+    object Loading : UiState()
+    data class Success(val dog: String?) : UiState()
+    data class Error(val message: String?) : UiState()
+}
 
-    private val _dog = MutableStateFlow<String?>("")
-    val dog: StateFlow<String?> = _dog
+@HiltViewModel
+class DogViewModel @Inject constructor(private val getDog: GetDog) : ViewModel() {
+
+    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
+    val uiState: StateFlow<UiState> = _uiState
 
     init {
         getDogImage()
@@ -24,8 +27,12 @@ class DogViewModel @Inject constructor(private val getDog: GetDog) : ViewModel()
 
     private fun getDogImage() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                _dog.value = getDog.invoke().firstOrNull()
+            getDog.invoke().collect { dog ->
+                dog.onSuccess {
+                    _uiState.value = UiState.Success(it)
+                }.onFailure {
+                    _uiState.value = UiState.Error(it.message ?: "Unknown error")
+                }
             }
         }
     }
