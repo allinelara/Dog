@@ -17,4 +17,10 @@ interface DogDao {
 
     @Delete
     fun delete(image: DogEntity)
+
+    @Query("SELECT * FROM dog WHERE image =:image ")
+    fun getDog(image: String): DogEntity
+
+    @Query("DELETE FROM dog WHERE image = :image")
+    suspend fun deleteByImage(image: String)
 }

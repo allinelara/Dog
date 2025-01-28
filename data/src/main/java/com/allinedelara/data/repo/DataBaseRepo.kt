@@ -9,4 +9,9 @@ interface DataBaseRepo {
     suspend fun addToDataBase(dog: DogEntity)
 
     suspend fun delete(dog: DogEntity)
+
+    suspend fun deleteByImage(image: String)
+
+    suspend fun getDog(image: String): DogEntity?
+
 }

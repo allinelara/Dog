@@ -12,4 +12,8 @@ class DataBaseRepoImpl(private val dao: DogDao) : DataBaseRepo {
 
     override suspend fun delete(dog: DogEntity) = dao.delete(image = dog)
 
+    override suspend fun deleteByImage(image: String)  = dao.deleteByImage(image = image)
+
+    override suspend fun getDog(image: String): DogEntity?  = dao.getDog(image = image)
+
 }
