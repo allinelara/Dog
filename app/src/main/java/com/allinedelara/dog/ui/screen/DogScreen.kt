@@ -1,13 +1,18 @@
 package com.allinedelara.dog.ui.screen
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -30,13 +35,25 @@ fun DogScreen(viewmodel: DogViewModel = hiltViewModel()) {
 
     val uiState by viewmodel.uiState.collectAsStateWithLifecycle()
 
-    DogContent(uiState = uiState)
+    DogContent(
+        uiState = uiState,
+        addToFavourites = viewmodel::addToFavourites,
+    )
 
 }
 
 @Composable
-fun DogContent(uiState: UiState) {
-    Column {
+fun DogContent(
+    uiState: UiState,
+    addToFavourites: (String) -> Unit = {},
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         when (uiState) {
             is UiState.Loading -> {
                 CircularProgressIndicator()
@@ -44,7 +61,18 @@ fun DogContent(uiState: UiState) {
 
             is UiState.Success -> {
                 uiState.dog?.let {
-                    DogImageFromURLWithPlaceHolder(it)
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        DogImageFromURLWithPlaceHolder(it)
+                        Spacer(modifier = Modifier.size(8.dp))
+                        Button(onClick = {
+                            addToFavourites(it)
+                        }) {
+                            Text(text = stringResource(id = R.string.save_to_favourites))
+                        }
+                    }
                 }
             }
 
@@ -73,7 +101,5 @@ fun DogImageFromURLWithPlaceHolder(imageUrl: String) {
         placeholder = painterResource(R.drawable.ic_launcher_foreground),
         contentDescription = stringResource(R.string.app_name),
         contentScale = ContentScale.Crop,
-        modifier = Modifier.size(50.dp),
-        colorFilter = ColorFilter.tint(Color.Blue)
     )
 }
