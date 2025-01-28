@@ -13,21 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.allinedelara.dog.R
+import com.allinedelara.dog.ui.component.DogImageFromURLWithPlaceHolder
 import com.allinedelara.dog.viewModel.DogViewModel
 import com.allinedelara.dog.viewModel.UiState
-import com.allinedelara.domain.model.Dog
 
 @Composable
 fun DogScreen(viewmodel: DogViewModel = hiltViewModel()) {
@@ -69,7 +64,7 @@ fun DogContent(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        DogImageFromURLWithPlaceHolder(it)
+                        DogImageFromURLWithPlaceHolder(imageUrl = it, width = 400, height = 300)
                         Spacer(modifier = Modifier.size(8.dp))
                         if (isFavourite) {
                             Button(onClick = {
@@ -100,20 +95,6 @@ fun DogContent(
             }
         }
     }
-}
-
-
-@Composable
-fun DogImageFromURLWithPlaceHolder(imageUrl: String) {
-    AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .crossfade(true)
-            .build(),
-        placeholder = painterResource(R.drawable.ic_launcher_foreground),
-        contentDescription = stringResource(R.string.app_name),
-        contentScale = ContentScale.Crop,
-    )
 }
 
 @PreviewLightDark()

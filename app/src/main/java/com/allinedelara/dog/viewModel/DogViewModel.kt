@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.allinedelara.domain.useCase.AddToFavourite
 import com.allinedelara.domain.useCase.CheckDogFavourite
-import com.allinedelara.domain.useCase.DeleteFromFavourite
 import com.allinedelara.domain.useCase.DeleteFromFavouriteByImage
 import com.allinedelara.domain.useCase.GetDogRemote
 import dagger.hilt.android.lifecycle.HiltViewModel
