@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
-class GetDog @Inject constructor(private val remoteRepo: RemoteRepo) {
+class GetDogRemote @Inject constructor(private val remoteRepo: RemoteRepo) {
     suspend operator fun invoke(): Flow<Result<String?>> {
         return flowOf(remoteRepo.getDog())
     }

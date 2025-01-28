@@ -1,6 +1,6 @@
 package com.allinedelara.data.model
 
-data class Dog (
+data class DogResponse (
     val message: String,
     val status: String
 )
