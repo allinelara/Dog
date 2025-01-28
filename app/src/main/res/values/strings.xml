@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Dog</string>
     <string name="save_to_favourites">Save to Favourites</string>
+    <string name="delete_from_favourites">Delete from Favourites</string>
 
 </resources>
