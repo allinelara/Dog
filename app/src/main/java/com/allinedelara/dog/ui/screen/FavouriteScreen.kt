@@ -25,6 +25,7 @@ import com.allinedelara.dog.R
 import com.allinedelara.dog.ui.component.DogImageFromURLWithPlaceHolder
 import com.allinedelara.dog.viewModel.FavouriteViewModel
 import com.allinedelara.dog.viewModel.UiStateFavourite
+import com.allinedelara.domain.model.Dog
 
 
 @Composable
@@ -32,11 +33,15 @@ fun FavoriteScreen(viewmodel: FavouriteViewModel = hiltViewModel()) {
 
     val uiState by viewmodel.uiState.collectAsStateWithLifecycle()
 
-    ContentFavourite(uiState = uiState)
+    ContentFavourite(
+        uiState = uiState, deleteFromFavourites = viewmodel::deleteFromFavourites
+    )
 }
 
 @Composable
-fun ContentFavourite(uiState: UiStateFavourite) {
+fun ContentFavourite(
+    uiState: UiStateFavourite, deleteFromFavourites: (Dog) -> Unit = {},
+) {
     when (uiState) {
         is UiStateFavourite.Error -> uiState.message?.let {
             Text(
@@ -67,7 +72,7 @@ fun ContentFavourite(uiState: UiStateFavourite) {
                         )
                         Spacer(modifier = Modifier.size(8.dp))
                         Button(onClick = {
-                            //deleteFromFavourites(it)
+                            deleteFromFavourites(dog)
                         }) {
                             Text(text = stringResource(id = R.string.delete))
                         }
