@@ -38,7 +38,7 @@ class DogViewModel @Inject constructor(
         getDogImage()
     }
 
-    private fun getDogImage() {
+    fun getDogImage() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 getDog.invoke().collect { dog ->

@@ -34,7 +34,8 @@ fun DogScreen(viewmodel: DogViewModel = hiltViewModel()) {
         uiState = uiState,
         isFavourite = isFavourite,
         addToFavourites = viewmodel::addToFavourites,
-        deleteFromFavourites = viewmodel::deleteFromFavourites
+        deleteFromFavourites = viewmodel::deleteFromFavourites,
+        loadNewImage = viewmodel::getDogImage
     )
 
 }
@@ -45,6 +46,7 @@ fun DogContent(
     isFavourite: Boolean = false,
     addToFavourites: (String) -> Unit = {},
     deleteFromFavourites: (String) -> Unit = {},
+    loadNewImage: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -78,6 +80,12 @@ fun DogContent(
                             }) {
                                 Text(text = stringResource(id = R.string.save_to_favourites))
                             }
+                        }
+                        Spacer(modifier = Modifier.size(32.dp))
+                        Button(onClick = {
+                            loadNewImage()
+                        }) {
+                            Text(text = stringResource(id = R.string.load_new_image))
                         }
                     }
                 }
