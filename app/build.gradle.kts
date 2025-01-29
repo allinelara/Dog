@@ -51,6 +51,10 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
 
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.core.testing)
+
     implementation(libs.coil)
 
     implementation(project(":domain"))

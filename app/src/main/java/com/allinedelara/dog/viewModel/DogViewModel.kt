@@ -45,6 +45,7 @@ class DogViewModel @Inject constructor(
                     dog.onSuccess {
                         _uiState.value = UiState.Success(it)
                         it?.let { _isFavourite.value = checkDogFavourite.invoke(it) }
+                        println("_isFavourite" + _isFavourite.value)
                     }.onFailure {
                         _uiState.value = UiState.Error(it.message ?: "Unknown error")
                     }
@@ -56,8 +57,12 @@ class DogViewModel @Inject constructor(
     fun addToFavourites(image: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                addToFavourite.invoke(image)
-                _isFavourite.value = true
+                try {
+                    addToFavourite.invoke(image)
+                    _isFavourite.value = true
+                } catch (e: Exception) {
+                    _isFavourite.value = false
+                }
             }
         }
     }
@@ -65,8 +70,12 @@ class DogViewModel @Inject constructor(
     fun deleteFromFavourites(image: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                deleteFromFavouriteByImage.invoke(image)
-                _isFavourite.value = false
+                try {
+                    deleteFromFavouriteByImage.invoke(image)
+                    _isFavourite.value = false
+                } catch (e: Exception) {
+                    _isFavourite.value = true
+                }
             }
         }
     }

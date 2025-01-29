@@ -49,9 +49,13 @@ class FavouriteViewModel @Inject constructor(
     fun deleteFromFavourites(dog: Dog) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                deleteFromFavourite.invoke(dog)
-                _uiState.value = UiStateFavourite.Loading
-                getDogs()
+                try {
+                    deleteFromFavourite.invoke(dog)
+                    _uiState.value = UiStateFavourite.Loading
+                    getDogs()
+                } catch (e: Exception) {
+                    _uiState.value = UiStateFavourite.Error(e.message ?: "Unknown error")
+                }
             }
         }
     }
